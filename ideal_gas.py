@@ -84,7 +84,7 @@ class Particle:
         rad2 = self.radius + op.radius
 
         dist = p_pos - op_pos
-        dist_norm = np.linalg.norm(dist)
+        dist_norm = norm(dist)
 
         if dist_norm <= rad2: 
 
@@ -142,6 +142,16 @@ class Particle:
 
 
 
+def norm(x):
+    """
+        Computes norm of a vector x.
+    """
+
+    return np.linalg.norm(x)
+
+
+
+
 def max_boltz(V):
     
     """
@@ -170,8 +180,8 @@ def init_param():
     """
 
     # array of energies
-    u  = np.random.dirichlet(np.ones(N), size=1)
-    u *= U
+    u  = np.random.uniform(size=N)
+    u *= U / sum(u)
 
     # squared grid for initial position
     X = np.linspace(L*0.1, L*0.9, int(np.ceil(np.sqrt(N))))
@@ -182,11 +192,12 @@ def init_param():
 
     for i in range(N):
         
-        r_rand  = np.random.dirichlet(np.ones(2), size=1)
-        r_rand /= np.linalg.norm(r_rand[0])
+        rx = np.random.uniform()
+        ry = (1 - rx)
+        r_norm = norm(np.array([rx, ry]))
         
-        vel_x = np.sqrt(2 * u[0][i] / m) * r_rand[0][0] * (-1) ** np.random.randint(1,3)
-        vel_y = np.sqrt(2 * u[0][i] / m) * r_rand[0][1] * (-1) ** np.random.randint(1,3)
+        vel_x = np.sqrt(2 * u[i] / m) * rx/r_norm * (-1) ** np.random.randint(1,3)
+        vel_y = np.sqrt(2 * u[i] / m) * ry/r_norm * (-1) ** np.random.randint(1,3)
 
         pos = grid[i]
         vel = np.array([vel_x, vel_y])
@@ -252,7 +263,7 @@ def simulation(pos_collection, vel_collection):
     v_mod = [np.linalg.norm(vel) for vel in vel_collection[0]]
     v_max = max(v_mod)
 
-    V     = np.linspace(0, v_max*2, 120)
+    V     = np.linspace(0, v_max*2.5, 120)
     fv    = max_boltz(V)
 
     pos_up = list(zip(*pos_collection))
@@ -280,7 +291,7 @@ def simulation(pos_collection, vel_collection):
     for circle in circles:
         ax[0].add_patch(circle)
 
-    BINS = np.linspace(0, v_max*1.2, 15)
+    BINS = np.linspace(0, v_max*2.5, 15)
     n, _ = np.histogram(v_hist[0], BINS, density=True)
     _, _, bar_container = ax[1].hist(v_hist[0], BINS, lw=1, ec="black", 
                                      fc="orange", label='Simulated data')
@@ -304,7 +315,7 @@ def simulation(pos_collection, vel_collection):
     # to save animation select save = True 
     save = True
     if save:
-        anim.save('idealgas_test.mp4', fps=60, dpi=400)
+        anim.save('idealgas.mp4', fps=60, dpi=400)
     
     plt.show()
 
