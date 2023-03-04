@@ -8,7 +8,8 @@
     are no intermolecular forces between its particles.
 
     In this code, we perform simulation of an ideal gas at temperature T 
-    composed of N particles confined to move in a 2-dimensional box of length L.
+    composed of N particles constrained to move in a 2-dimensional box of 
+    length L.
 
     author: @idiegoalvarado
     github.com/iDiegoAlvarado/
@@ -38,6 +39,7 @@ U   = 2/3 * N * k_B * T   # Internal energy         [J]
 
 TIME = 1000               # Simulation time         [s]
 dt   = 0.03               # Time step               [s]
+
 
 
 
@@ -84,7 +86,7 @@ class Particle:
         rad2 = self.radius + op.radius
 
         dist = p_pos - op_pos
-        dist_norm = norm(dist)
+        dist_norm = np.linalg.norm(dist)
 
         if dist_norm <= rad2: 
 
@@ -142,16 +144,6 @@ class Particle:
 
 
 
-def norm(x):
-    """
-        Computes norm of a vector x.
-    """
-
-    return np.linalg.norm(x)
-
-
-
-
 def max_boltz(V):
     
     """
@@ -194,7 +186,7 @@ def init_param():
         
         rx = np.random.uniform()
         ry = (1 - rx)
-        r_norm = norm(np.array([rx, ry]))
+        r_norm = np.linalg.norm((np.array([rx, ry])))
         
         vel_x = np.sqrt(2 * u[i] / m) * rx/r_norm * (-1) ** np.random.randint(1,3)
         vel_y = np.sqrt(2 * u[i] / m) * ry/r_norm * (-1) ** np.random.randint(1,3)
@@ -313,9 +305,9 @@ def simulation(pos_collection, vel_collection):
     anim = FuncAnimation(fig, update, frames=TIME, blit=False, interval=100)
     
     # to save animation select save = True 
-    save = True
+    save = False
     if save:
-        anim.save('idealgas.mp4', fps=60, dpi=400)
+        anim.save('idealgas_test_4.mp4', fps=60, dpi=400)
     
     plt.show()
 
