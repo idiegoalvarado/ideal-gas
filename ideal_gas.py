@@ -94,8 +94,8 @@ class Particle:
             op.vel   = op_vel - np.dot(op_vel - p_vel, -dist) * (-dist) / dist_norm ** 2
 
             """
-                When a collision occurs, the particles strictly separate at the 
-                next timestamp in dirrection of the colide vec(r1 - r2).
+                When a collision occurs, the particles strictly separate at the
+                next timestep in the direction of the collision vector (r1 - r2).
             """
             clip = rad2 - dist_norm
             norm = dist / dist_norm
@@ -163,9 +163,9 @@ def init_param():
         Defines each particle parameters.
 
         
-        Using the random.dirichlet() module, the internal energy of the
+        Using the random.uniform() module, the internal energy of the
         of the system is randomly distributed for all of the N particles.
-        This will define the initial velovity for each particle.
+        This will define the initial velocity for each particle.
 
         The initial positions are defined in a perfect squared grid.
         
@@ -290,7 +290,7 @@ def simulation(pos_collection, vel_collection):
     ax[1].legend(fontsize=8)
 
 
-    # Update figure
+    # update figure
     def update(i):
 
         for circle, xy in zip(circles, pos_up):
