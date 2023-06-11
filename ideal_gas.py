@@ -12,7 +12,7 @@
     length L.
 
     author: @idiegoalvarado
-    github.com/iDiegoAlvarado/
+    repo:   github.com/idiegoalvarado/ideal-gas
 
 """
 
@@ -307,7 +307,7 @@ def simulation(pos_collection, vel_collection):
     # to save animation select save = True 
     save = False
     if save:
-        anim.save('idealgas_test_4.mp4', fps=60, dpi=400)
+        anim.save('idealgas_test.mp4', fps=60, dpi=400)
     
     plt.show()
 
